@@ -1,0 +1,40 @@
+---
+########################## dev
+debug: true
+server:
+  port: 8080
+  tomcat:
+    basedir: E:/test/tomcatfiletemp
+spring:
+  profiles: dev
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://127.0.0.1:3306/security?characterEncoding=UTF-8
+    username: root
+    password: root
+    driverClassName: com.mysql.jdbc.Driver
+  jpa: 
+    show-sql: true
+    generate-ddl: false
+    database: MYSQL
+    hibernate: 
+      ddl-auto: update
+author:
+  app:
+    ignoreUrls: /test/**
+  web:
+    ignoreUrls: /,/home,/error,/v2/api-docs,/web/security/loginFail,/web/security/loginSuccess,/web/login,/swagger/**
+jwt:  
+  header: Authorization
+  secret: mySecret
+  #(秒)
+  expiration: 300
+  route:
+    authentication:
+      path: /auth
+      refresh: /refresh
+roles: 
+  deleteDeny: admin
+swagger: 
+  version: 1
+
