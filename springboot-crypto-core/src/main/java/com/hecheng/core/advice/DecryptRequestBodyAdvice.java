@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.method.annotation.RequestBodyAdvice;
 
+import com.alibaba.fastjson.JSONObject;
 import com.hecheng.core.annotation.ApiDecryptAnno;
 import com.hecheng.core.common.utils.crypto.aesrsa.AESCoder;
 import com.hecheng.core.common.utils.crypto.aesrsa.EncryUtil;
@@ -41,7 +42,8 @@ import com.hecheng.core.configuration.CryptoProperties;
  * client将签名加入到请求参数中，然后转换为jsonStr格式 4. client使用aesKey对json数据进行加密得到密文 5. encryptkey和密文提交到服务端
  * ============================================= 1. 对client请求的数据，进行验签encryptkey
  * 为client用sever公钥加密后的AES密钥 2. 使用sever私钥对encryptkey进行解密，得到aeskey 3. 使用aesKey对json数据进行解密得到明文(data)
- * <pre>
+ * 
+ * { "data":"加密数据", "encryptkey":"client使用sever的RSA公钥对aesKey进行加密(encryptkey)" } <pre>
  * 
  * @author hc
  */
@@ -162,26 +164,29 @@ class DecryptHttpInputMessage implements HttpInputMessage {
   public DecryptHttpInputMessage(HttpInputMessage inputMessage, String accesskey,
       String clientPublicKey, String serverPrivateKey) throws Exception {
     this.headers = inputMessage.getHeaders();
-    String requestInfo = IOUtils.toString(inputMessage.getBody(), DecryptRequestBodyAdvice.CHARSET);
+    String requestInfoStr =
+        IOUtils.toString(inputMessage.getBody(), DecryptRequestBodyAdvice.CHARSET);
+    JSONObject requestInfo = JSONObject.parseObject(requestInfoStr);
     long startTime = System.currentTimeMillis();
     // JSON 数据格式的不进行解密操作
     String decryptBody = "";
-    if (requestInfo.startsWith("{")) {
-      decryptBody = requestInfo;
+    if (requestInfo == null) {
+      decryptBody = requestInfoStr;
     } else {
-      List<String> encryptkeys = this.headers.getValuesAsList("encryptkey");
-      if (encryptkeys != null && !encryptkeys.isEmpty()) {
-        String encryptkey = encryptkeys.get(0);
-        if (StringUtils.isNotBlank(encryptkey)) {
-          // 1. 对客户端请求的数据，进行验签encryptkey 为客户端用服务端公钥加密后的AES密钥
-          boolean passSign = EncryUtil.checkDecryptAndSign(requestInfo, encryptkey, clientPublicKey,
-              serverPrivateKey);
-          if (passSign) {
-            // 2, 使用sever私钥对encryptkey进行解密，得到aeskey
-            String aeskey = RSA.decrypt(encryptkey, serverPrivateKey);
-            // 3，使用aesKey对json数据进行解密得到明文(data)
-            decryptBody = AESCoder.decryptFromBase64(requestInfo, aeskey);
-          }
+      String encryptkey = requestInfo.getString("encryptkey");
+      String data = requestInfo.getString("data");
+      if (encryptkey == null || data == null) {
+        decryptBody = requestInfoStr;
+      }
+      if (StringUtils.isNotBlank(encryptkey)) {
+        // 1. 对客户端请求的数据，进行验签encryptkey 为客户端用服务端公钥加密后的AES密钥
+        boolean passSign =
+            EncryUtil.checkDecryptAndSign(data, encryptkey, clientPublicKey, serverPrivateKey);
+        if (passSign) {
+          // 2, 使用sever私钥对encryptkey进行解密，得到aeskey
+          String aeskey = RSA.decrypt(encryptkey, serverPrivateKey);
+          // 3，使用aesKey对json数据进行解密得到明文(data)
+          decryptBody = AESCoder.decryptFromBase64(data, aeskey);
         }
       }
     }
