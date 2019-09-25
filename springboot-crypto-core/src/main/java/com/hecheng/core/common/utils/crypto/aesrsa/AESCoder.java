@@ -58,6 +58,7 @@ public class AESCoder {
   /** 算法/模式/补码方式 */
   public static final String AES_ALGORITHM = "AES";
   // public static final String AES_ALGORITHM = "AES/CBC/PKCS5Padding";
+  // public static final String AES_ALGORITHM = "AES/ECB/PKCS5Padding";
   // public static final String AES_ALGORITHM = "DESede/CBC/PKCS5Padding";
   public static final String CHAR_ENCODING = "UTF-8";
 

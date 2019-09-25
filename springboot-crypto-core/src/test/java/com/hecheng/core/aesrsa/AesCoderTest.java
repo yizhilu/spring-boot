@@ -17,7 +17,8 @@ public class AesCoderTest {
 
   @Test
   public void test() {
-    String inputStr = "I am AES";
+    //PzaEznCCAI5BTMTR4no6LA==
+    String inputStr = "test";
 
     // 针对CBC模式，需要16位
     String key = "9999999999999999";

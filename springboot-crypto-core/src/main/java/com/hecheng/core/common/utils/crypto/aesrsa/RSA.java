@@ -30,6 +30,7 @@ public class RSA {
    * CBC模式要求加密字符串长度为16倍数
    */
   public static final String RSA_ALGORITHM = "RSA/ECB/PKCS1Padding";
+  // public static final String RSA_ALGORITHM = "RSA";
   /**
    * 字符编码
    */
@@ -203,5 +204,10 @@ public class RSA {
     Map<String, String> map = generateKeyPair();
     System.out.println("publicKey: " + map.get("publicKey"));
     System.out.println("privateKey: " + map.get("privateKey"));
+    String a = encrypt("9999999999999999", map.get("publicKey"));
+    System.out.println(a);
+    System.out.println(decrypt(a, map.get("privateKey")));
+
+
   }
 }

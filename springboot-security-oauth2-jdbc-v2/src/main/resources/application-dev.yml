@@ -1,0 +1,39 @@
+---
+########################## dev
+server:
+  port: 8081
+  tomcat:
+    basedir: E:/test/tomcatfiletemp
+spring:
+  profiles: dev
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://127.0.0.1:3306/security_oauth2_v2?characterEncoding=UTF-8
+    username: root
+    password: root
+    driverClassName: com.mysql.jdbc.Driver
+  redis:
+    host: 127.0.0.1
+    database: 0
+  jpa: 
+    show-sql: true
+    generate-ddl: false
+    database: MYSQL
+    hibernate: 
+      ddl-auto: update
+  security:
+      oauth2:
+        resource:
+          filter-order: 3
+author:
+  adminIgnoreUrls: /v2/api-docs,/v1/security/loginFail,/v1/security/loginSuccess,/login
+  apiIgnoreUrls: /oauth/**,/token/**
+  staticIgnoreUrls: /home,/error,/swagger/**
+roles: 
+  deleteDeny: admin
+swagger: 
+  version: 1
+logging:
+  level:
+    org.springframework: DEBUG  
+

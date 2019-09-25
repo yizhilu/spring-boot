@@ -20,7 +20,7 @@ spring:
     hibernate: 
       ddl-auto: update
 author:
-  ignoreUrls: /,/home,/error,/swagger/**,/v2/api-docs,/v1/security/loginFail,/v1/security/loginSuccess,/login
+  ignoreUrls: /system/**,/demo/**,/,/home,/error,/swagger/**,/v2/api-docs,/v1/security/loginFail,/v1/security/loginSuccess,/login
 roles: 
   deleteDeny: admin
 swagger: 
