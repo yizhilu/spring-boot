@@ -26,7 +26,7 @@ spring:
         resource:
           filter-order: 3
 author:
-  adminIgnoreUrls: /v2/api-docs,/v1/security/loginFail,/v1/security/loginSuccess,/login
+  adminIgnoreUrls: /v2/api-docs,/v1/security/loginFail,/v1/security/loginSuccess,/login,/oauth/**,/token/**
   apiIgnoreUrls: /oauth/**,/token/**
   staticIgnoreUrls: /home,/error,/swagger/**
 roles: 
