@@ -32,6 +32,7 @@ import com.vanda.oauth2.config.module.configuration.properties.Oauth2TokenProper
 @EnableConfigurationProperties({Oauth2TokenProperties.class})
 public abstract class AbstractAuthorizationServerConfigurerAdapter
     extends AuthorizationServerConfigurerAdapter {
+
   @Autowired
   protected TokenStore tokenStore;
   @Autowired
