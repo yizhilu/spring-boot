@@ -1,0 +1,12 @@
+oauth2Token: 
+  #30天
+  refreshTokenValiditySeconds: 2592000
+  #12小时
+  accessTokenValiditySeconds: 43200
+  supportRefreshToken: false
+  reuseRefreshToken: true
+encrypt:
+  key-store:
+    location: default.jks
+    secret: password123456
+    alias: default

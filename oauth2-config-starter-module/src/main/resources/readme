@@ -1,0 +1,20 @@
+验证
+密码授权模式
+[ 密码模式需要参数：username , password , granttype , clientid , client_secret ]
+curl -X POST -d "username=admin&password=123456&grant_type=password&client_id=dev&client_secret=dev" http://localhost:8080/oauth/token
+====================================================
+
+刷新token
+curl  -X POST -d 'grant_type=refresh_token&refresh_token=23503bc7-4494-4795-a047-98db75053374&client_id=dev&client_secret=dev' http://localhost:8080/oauth/token
+====================================================
+
+客户端授权模式
+[ 客户端模式需要参数：granttype , clientid , client_secret ]
+curl -X POST -d "grant_type=client_credentials&client_id=dev&client_secret=dev" http://localhost:8080/oauth/token
+
+====================================================
+授权码模式
+获取code
+http://localhost:8080/oauth/authorize?response_type=code&client_id=dev&redirect_uri=http://www.baidu.com
+通过code换token
+curl -X POST -d "grant_type=authorization_code&code=qS03iu&client_id=dev&client_secret=dev&redirect_uri=http://www.baidu.com" http://localhost:8080/oauth/token
