@@ -1,0 +1,51 @@
+---
+########################## dev
+debug: true
+server:
+  port: 8080
+  tomcat:
+    basedir: E:/test/tomcatfiletemp
+spring:
+  profiles: dev
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://127.0.0.1:3306/security?characterEncoding=UTF-8
+    username: root
+    password: root
+    driverClassName: com.mysql.jdbc.Driver
+  jpa: 
+    show-sql: true
+    generate-ddl: false
+    database: MYSQL
+    hibernate: 
+      ddl-auto: update
+  redis:
+    host: 127.0.0.1
+    database: 0  
+author:
+  ignoreUrls: /test/**,/system/**,/demo/**,/,/home,/error,/swagger/**,/v2/api-docs,/v1/security/loginFail,/v1/security/loginSuccess,/login
+roles: 
+  deleteDeny: admin
+swagger: 
+  version: 1
+    
+curator:
+  #重试次数
+  retryCount: 5
+  #重试间隔时间 
+  elapsedTimeMs: 5000
+  # zookeeper 地址
+  connectString: 192.168.0.116:2181
+  # session超时时间
+  sessionTimeoutMs: 60000
+  # 连接超时时间  
+  connectionTimeoutMs: 5000
+  lockRoot: /lock/root
+redisson:
+  lock:
+    server:
+      address: 127.0.0.1:6379
+      password:
+      database: 0
+      type: standalone
+
